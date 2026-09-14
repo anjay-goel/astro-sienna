@@ -59,6 +59,20 @@ loads eagerly with high fetch priority, since it sits above the fold.
 | Body font  | Newsreader               | `--font-serif` in `global.css`                     |
 | Mono font  | JetBrains Mono           | `--font-mono` in `global.css`                      |
 
+## Diagrams
+
+A code fence labelled `mermaid` becomes a diagram. It follows the light/dark theme, and the renderer only loads when
+a diagram gets close to the viewport. Posts without diagrams don't load Mermaid.
+
+```mermaid
+flowchart LR
+    accTitle: Publishing a post
+    accDescr: Write a draft, preview it locally, then publish it.
+    A[Draft] --> B[Preview] --> C[Publish]
+```
+
+Add `accTitle` and `accDescr` to describe the diagram for screen readers. Without JavaScript, the source stays visible.
+
 ## Custom containers
 
 Three styled containers ship for asides:

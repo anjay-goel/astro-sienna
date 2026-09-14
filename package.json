@@ -7,6 +7,7 @@
 	"type": "module",
 	"packageManager": "pnpm@10.19.0",
 	"scripts": {
+		"test": "node --experimental-strip-types --test tests/*.test.mjs",
 		"dev": "astro dev",
 		"start": "astro dev",
 		"build": "astro check && astro build",
@@ -39,6 +40,7 @@
 		"mdast-util-directive": "^3.1.0",
 		"mdast-util-to-markdown": "^2.1.2",
 		"mdast-util-to-string": "^4.0.0",
+		"mermaid": "^12.0.0",
 		"rehype-external-links": "^3.0.0",
 		"rehype-katex": "^7.0.1",
 		"remark-directive": "^4.0.0",

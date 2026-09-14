@@ -11,6 +11,7 @@ analytics.
 
 - Astro 7 with content collections (posts and pages, both validated by Zod)
 - MDX support — embed Astro/JSX components, imports, and JS expressions inside posts
+- Mermaid diagrams in Markdown and MDX, loaded when a diagram approaches the viewport
 - Light and dark mode with a CSS-only theme toggle
 - Self-hosted serif body font ([Newsreader](https://github.com/productiontype/Newsreader)) and mono (JetBrains Mono)
 - Code blocks via [astro-expressive-code](https://expressive-code.com): themes, copy button, terminal frames, line
@@ -92,6 +93,24 @@ tags: [ tag-one, tag-two ]
 #   alt: "Description for screen readers"
 ---
 ```
+
+### Diagrams
+
+Use a `mermaid` fence in a Markdown or MDX post:
+
+````markdown
+```mermaid
+flowchart LR
+    accTitle: Publishing a post
+    accDescr: Write a draft, preview it locally, then publish it.
+    A[Draft] --> B[Preview] --> C[Publish]
+```
+````
+
+Diagrams follow the site's light/dark theme. Mermaid loads locally from the built assets when a diagram comes near
+the viewport. Posts without diagrams only run a small loader; they do not download Mermaid or register its observers.
+Without JavaScript, the diagram source remains readable. Invalid diagrams also keep their source and log an error.
+Wide diagrams scroll horizontally on small screens. Use `accTitle` and `accDescr` for screen-reader descriptions.
 
 The about page is also markdown, at `src/content/page/about.md`. Showcase entries are typed objects in
 `src/data/showcase.ts`; empty the array and the Showcase tab is hidden automatically.

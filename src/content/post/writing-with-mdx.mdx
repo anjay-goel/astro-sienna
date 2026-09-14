@@ -32,6 +32,18 @@ There are currently **{showcase.length} entries** in `src/data/showcase.ts`:
 
 Add or remove an entry in that file and the list above updates on the next build.
 
+## Diagrams
+
+Mermaid fences work here too, without importing a component:
+
+```mermaid
+sequenceDiagram
+    accTitle: Serving a static post
+    accDescr: The reader requests a post and the site returns the HTML generated at build time.
+    Reader->>Site: Open a post
+    Site-->>Reader: Return the built HTML
+```
+
 ## When to reach for MDX
 
 Most posts don't need it — plain `.md` is shorter, easier to edit, and lints cleanly with prettier. Use `.mdx` when:
