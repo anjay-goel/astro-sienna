@@ -3,7 +3,6 @@
 @import "@fontsource-variable/newsreader/wght-italic.css";
 @import "@fontsource-variable/inter/wght.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
-@import "katex/dist/katex.min.css";
 @import "tailwindcss";
 
 @config "../../tailwind.config.ts";

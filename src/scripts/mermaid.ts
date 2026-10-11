@@ -12,24 +12,39 @@ if (diagrams.length) {
 				const { default: mermaid } = await import("mermaid");
 				await document.fonts.ready;
 				const dark = document.documentElement.dataset.theme === "dark";
+				const palette = dark
+					? { bg: "#131110", paper: "#1a1715", border: "#4f4a42", line: "#c8c1ae", text: "#f4f0e3" }
+					: {
+							bg: "#f6f1e6",
+							paper: "#fbf6ec",
+							border: "#b8ad9b",
+							line: "#4a4239",
+							text: "#25201b",
+						};
 				mermaid.initialize({
 					startOnLoad: false,
 					layout: "dagre",
+					look: "classic",
 					securityLevel: "strict",
 					suppressErrorRendering: true,
 					theme: "base",
 					fontFamily: "Inter Variable, sans-serif",
 					themeVariables: {
 						darkMode: dark,
-						primaryColor: dark ? "#302720" : "#eee2d2",
-						primaryTextColor: dark ? "#f4f0e3" : "#25201b",
-						primaryBorderColor: dark ? "#c89761" : "#8a4423",
-						lineColor: dark ? "#c8c1ae" : "#4a4239",
-						secondaryColor: dark ? "#302720" : "#eee2d2",
-						tertiaryColor: dark ? "#211c18" : "#f6f1e6",
-						edgeLabelBackground: dark ? "#131110" : "#f6f1e6",
+						background: palette.bg,
+						primaryColor: palette.paper,
+						primaryTextColor: palette.text,
+						primaryBorderColor: palette.border,
+						lineColor: palette.line,
+						secondaryColor: palette.paper,
+						tertiaryColor: palette.bg,
+						edgeLabelBackground: palette.bg,
+						noteBkgColor: palette.paper,
+						noteBorderColor: palette.border,
+						noteTextColor: palette.text,
 					},
 					flowchart: { htmlLabels: false, curve: "linear" },
+					themeCSS: ".edgeLabel .label rect { opacity: 1; }",
 				});
 				for (const [node, source] of sources) {
 					try {
@@ -38,7 +53,7 @@ if (diagrams.length) {
 						node.dataset.rendered = "true";
 						const diagram = node.querySelector("svg");
 						if (diagram)
-							diagram.style.minWidth = `${Math.min(diagram.viewBox.baseVal.width, 560)}px`;
+							diagram.style.minWidth = `${Math.min(diagram.viewBox.baseVal.width * 0.7, 560)}px`;
 					} catch (error) {
 						console.error("Could not render Mermaid diagram", error);
 					}

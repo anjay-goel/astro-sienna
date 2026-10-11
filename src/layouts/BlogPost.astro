@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 
 import ShareButtons from "@/components/blog/ShareButtons.astro";
 import Mermaid from "@/components/blog/Mermaid.astro";
+import katexStylesheet from "katex/dist/katex.min.css?url";
 import WebMentions from "@/components/blog/webmentions/index.astro";
 import { getAllPosts, getPostSortDate, sortMDByDate } from "@/data/post";
 import { siteConfig } from "@/site-config";
@@ -31,6 +32,7 @@ const socialImage = ogImage ?? `/og-image/${slug}.png`;
 const articleDate = publishDate.toISOString();
 const articleModified = updatedDate?.toISOString();
 const { remarkPluginFrontmatter } = await render(post);
+const { hasMath, hasMermaid } = remarkPluginFrontmatter as { hasMath?: boolean; hasMermaid?: boolean };
 
 const authorName = siteConfig.profile?.name ?? siteConfig.author;
 const comments = siteConfig.comments;
@@ -57,6 +59,8 @@ const giscusThemes = import.meta.env.PROD
 ---
 
 <BaseLayout meta={{ articleDate, articleModified, description, ogImage: socialImage, title }}>
+	{hasMath && <link rel="stylesheet" href={katexStylesheet} slot="head" />}
+	{hasMermaid && <Mermaid slot="head" />}
 	<Schema
 		slot="head"
 		item={{
@@ -125,7 +129,6 @@ const giscusThemes = import.meta.env.PROD
 			<article class="post-article">
 				<slot />
 			</article>
-			<Mermaid />
 
 			<ShareButtons title={title} url={postUrl} description={description} />
 
