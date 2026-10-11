@@ -11,7 +11,8 @@ analytics.
 
 - Astro 7 with content collections (posts and pages, both validated by Zod)
 - MDX support — embed Astro/JSX components, imports, and JS expressions inside posts
-- Mermaid diagrams in Markdown and MDX, loaded when a diagram approaches the viewport
+- Mermaid diagrams in Markdown and MDX, loaded only on posts that use them and only when a diagram approaches the
+  viewport
 - Light and dark mode with a CSS-only theme toggle
 - Self-hosted serif body font ([Newsreader](https://github.com/productiontype/Newsreader)) and mono (JetBrains Mono)
 - Code blocks via [astro-expressive-code](https://expressive-code.com): themes, copy button, terminal frames, line
@@ -107,10 +108,16 @@ flowchart LR
 ```
 ````
 
-Diagrams follow the site's light/dark theme. Mermaid loads locally from the built assets when a diagram comes near
-the viewport. Posts without diagrams only run a small loader; they do not download Mermaid or register its observers.
+Diagrams follow the site's light/dark theme and redraw when the theme is toggled. Only posts that contain a diagram
+include the loader script; posts without diagrams ship no diagram code at all. On those posts, Mermaid loads locally
+from the built assets when the first diagram comes within 200px of the viewport.
+
 Without JavaScript, the diagram source remains readable. Invalid diagrams also keep their source and log an error.
-Wide diagrams scroll horizontally on small screens. Use `accTitle` and `accDescr` for screen-reader descriptions.
+Small diagrams shrink to fit narrow screens and wide ones scroll horizontally inside their frame. Diagram source is
+excluded from Pagefind search. Use `accTitle` and `accDescr` for screen-reader descriptions.
+
+The demo post `src/content/post/diagrams-with-mermaid.md` shows flowcharts, sequence, state, entity-relationship and
+Gantt diagrams. The renderer is configured in `src/scripts/mermaid.ts`: colours, font and Mermaid's `classic` look.
 
 The about page is also markdown, at `src/content/page/about.md`. Showcase entries are typed objects in
 `src/data/showcase.ts`; empty the array and the Showcase tab is hidden automatically.

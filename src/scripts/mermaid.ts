@@ -15,6 +15,7 @@ if (diagrams.length) {
 				mermaid.initialize({
 					startOnLoad: false,
 					layout: "dagre",
+					look: "classic",
 					securityLevel: "strict",
 					suppressErrorRendering: true,
 					theme: "base",
@@ -38,7 +39,7 @@ if (diagrams.length) {
 						node.dataset.rendered = "true";
 						const diagram = node.querySelector("svg");
 						if (diagram)
-							diagram.style.minWidth = `${Math.min(diagram.viewBox.baseVal.width, 560)}px`;
+							diagram.style.minWidth = `${Math.min(diagram.viewBox.baseVal.width * 0.7, 560)}px`;
 					} catch (error) {
 						console.error("Could not render Mermaid diagram", error);
 					}

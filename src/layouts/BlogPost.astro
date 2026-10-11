@@ -125,7 +125,7 @@ const giscusThemes = import.meta.env.PROD
 			<article class="post-article">
 				<slot />
 			</article>
-			<Mermaid />
+			{(remarkPluginFrontmatter as { hasMermaid?: boolean })?.hasMermaid && <Mermaid />}
 
 			<ShareButtons title={title} url={postUrl} description={description} />
 

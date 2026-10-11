@@ -72,6 +72,7 @@ flowchart LR
 ```
 
 Add `accTitle` and `accDescr` to describe the diagram for screen readers. Without JavaScript, the source stays visible.
+More diagram types are in [Diagrams with Mermaid](/posts/diagrams-with-mermaid/).
 
 ## Custom containers
 
