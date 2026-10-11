@@ -1,6 +1,6 @@
 ---
 title: "Diagrams with Mermaid"
-publishDate: 2026-10-11
+publishDate: 2026-02-15
 description: "Flowcharts, sequence diagrams, state machines and more, written as text in a mermaid code fence and drawn in the browser."
 tags: [ guide, writing, diagrams ]
 ---
@@ -52,12 +52,12 @@ sequenceDiagram
     accDescr: The browser loads the page, then fetches Mermaid only when a diagram scrolls near the viewport.
     participant Browser
     participant Site
-    Browser->>Site: GET /posts/diagrams-with-mermaid/
-    Site-->>Browser: HTML with diagram source
-    Note over Browser: Diagram nears the viewport
-    Browser->>Site: GET Mermaid script
+    Browser->>Site: Request post
+    Site-->>Browser: HTML
+    Note over Browser: Diagram in view
+    Browser->>Site: Request Mermaid
     Site-->>Browser: Mermaid
-    Note over Browser: Source replaced with SVG
+    Note over Browser: Draw diagram
 ```
 
 ## State diagrams
@@ -67,9 +67,9 @@ stateDiagram-v2
     accTitle: Lifecycle of a post
     accDescr: A post starts as a draft, gets published, and can be updated any number of times.
     [*] --> Draft
-    Draft --> Published: draft false
-    Published --> Updated: set updatedDate
-    Updated --> Updated: edit again
+    Draft --> Published: publish
+    Published --> Updated: edit
+    Updated --> Updated: edit
 ```
 
 ## Entity relationships
@@ -90,24 +90,8 @@ erDiagram
     }
 ```
 
-## Timelines
-
-```mermaid
-gantt
-    accTitle: Writing a long post
-    accDescr: Research, drafting, editing and publishing over two weeks.
-    dateFormat YYYY-MM-DD
-    axisFormat %d %b
-    section Writing
-    Research   :a1, 2026-10-01, 4d
-    Draft      :a2, after a1, 5d
-    Edit       :a3, after a2, 3d
-    section Release
-    Publish    :milestone, after a3, 0d
-```
-
-Mermaid supports more diagram types than these, including class diagrams, pie charts, mind maps and git graphs. See the
-[Mermaid documentation](https://mermaid.js.org/intro/) for the full syntax.
+Mermaid supports more diagram types than these, including class diagrams, Gantt charts, pie charts, mind maps and
+git graphs. See the [Mermaid documentation](https://mermaid.js.org/intro/) for the full syntax.
 
 ## How it loads
 
