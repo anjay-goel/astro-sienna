@@ -12,14 +12,29 @@ interface Props {
 }
 
 const {
-	meta: { articleDate, description = siteConfig.description, ogImage, title },
+	meta: {
+		articleDate,
+		articleModified,
+		description = siteConfig.description,
+		noindex,
+		ogImage,
+		title,
+	},
 } = Astro.props;
 ---
 
 <html class="scroll-smooth" lang={siteConfig.lang}>
 	<head>
 		<ThemeProvider />
-		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
+		<BaseHead
+			articleDate={articleDate}
+			articleModified={articleModified}
+			description={description}
+			noindex={noindex}
+			ogImage={ogImage}
+			title={title}
+		/>
+		<slot name="head" />
 	</head>
 	<body>
 		<SkipLink />

@@ -27,7 +27,8 @@ const {
 	id: slug,
 } = post;
 const socialImage = ogImage ?? `/og-image/${slug}.png`;
-const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
+const articleDate = publishDate.toISOString();
+const articleModified = updatedDate?.toISOString();
 const { remarkPluginFrontmatter } = await render(post);
 
 const authorName = siteConfig.profile?.name ?? siteConfig.author;
@@ -48,30 +49,30 @@ const readingTime: string =
 // Custom giscus themes only in prod: the giscus.app iframe can't fetch CSS from localhost / private IPs.
 const giscusThemes = import.meta.env.PROD
 	? {
-			light: new URL("/giscus-light.css", Astro.site).toString(),
-			dark: new URL("/giscus-dark.css", Astro.site).toString(),
+			light: absoluteUrl("/giscus-light.css", Astro.site),
+			dark: absoluteUrl("/giscus-dark.css", Astro.site),
 		}
 	: { light: "noborder_light", dark: "noborder_dark" };
 ---
 
-<Schema
-	item={{
-		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		headline: title,
-		datePublished: articleDate,
-		dateModified: updatedDate?.toISOString(),
-		url: postUrl,
-		image: socialImageAbsolute,
-		author: {
-			"@type": "Person",
-			name: authorName,
-		},
-		description: description,
-	}}
-/>
-
-<BaseLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
+<BaseLayout meta={{ articleDate, articleModified, description, ogImage: socialImage, title }}>
+	<Schema
+		slot="head"
+		item={{
+			"@context": "https://schema.org",
+			"@type": "BlogPosting",
+			headline: title,
+			datePublished: articleDate,
+			dateModified: articleModified,
+			url: postUrl,
+			image: socialImageAbsolute,
+			author: {
+				"@type": "Person",
+				name: authorName,
+			},
+			description: description,
+		}}
+	/>
 	<div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
 	<div class="post-shell">
 		<div class="post-main" data-pagefind-body>
@@ -706,7 +707,7 @@ const giscusThemes = import.meta.env.PROD
 		border: 1px solid var(--hairline);
 		background: var(--paper);
 	}
-	@media (prefers-reduced-motion: no-preference) {
+	@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
 		.post-article img[loading="lazy"]:not([data-in]) {
 			opacity: 0;
 		}
@@ -775,11 +776,13 @@ const giscusThemes = import.meta.env.PROD
 		margin-right: 8px;
 	}
 
+	.post-article .table-scroll {
+		margin: 28px 0;
+		overflow-x: auto;
+	}
 	.post-article table {
 		width: 100%;
-		max-width: 100%;
 		border-collapse: collapse;
-		margin: 28px 0;
 		font-size: 15.5px;
 		font-family: var(--font-sans);
 	}

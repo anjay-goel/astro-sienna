@@ -1,27 +1,34 @@
 import { siteConfig } from "@/site-config";
 
-const dateFormat = new Intl.DateTimeFormat(siteConfig.date.locale, siteConfig.date.options);
+const dateFormat = new Intl.DateTimeFormat(siteConfig.date.locale, {
+	timeZone: "UTC",
+	...siteConfig.date.options,
+});
 
 const railFormatter = new Intl.DateTimeFormat("en-US", {
 	day: "numeric",
 	month: "short",
 	year: "numeric",
+	timeZone: "UTC",
 });
 
 const stampFormatter = new Intl.DateTimeFormat("en-US", {
 	month: "long",
 	year: "numeric",
+	timeZone: "UTC",
 });
 
 const bylineFormatter = new Intl.DateTimeFormat("en-GB", {
 	day: "numeric",
 	month: "long",
 	year: "numeric",
+	timeZone: "UTC",
 });
 
 const eyebrowFormatter = new Intl.DateTimeFormat("en-US", {
 	month: "long",
 	year: "numeric",
+	timeZone: "UTC",
 });
 
 export function getFormattedDate(
@@ -30,6 +37,7 @@ export function getFormattedDate(
 ): string {
 	if (typeof options !== "undefined") {
 		return new Date(date).toLocaleDateString(siteConfig.date.locale, {
+			timeZone: "UTC",
 			...(siteConfig.date.options as Intl.DateTimeFormatOptions),
 			...options,
 		});

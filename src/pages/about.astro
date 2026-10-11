@@ -27,38 +27,38 @@ const personSameAs = [
 const avatarUrl = profile?.avatar ? absoluteUrl(profile.avatar, Astro.site) : undefined;
 ---
 
-<Schema
-	item={{
-		"@context": "https://schema.org",
-		"@type": "ProfilePage",
-		mainEntity: {
-			"@type": "Person",
-			name: authorName,
-			...(avatarUrl ? { image: avatarUrl } : {}),
-			...(profile?.jobTitle ? { jobTitle: profile.jobTitle } : {}),
-			...(profile?.employer
-				? {
-						worksFor: {
-							"@type": "Organization",
-							name: profile.employer,
-							...(profile.employerUrl ? { url: profile.employerUrl } : {}),
-						},
-					}
-				: {}),
-			...(profile?.alumni
-				? {
-						alumniOf: {
-							"@type": "CollegeOrUniversity",
-							name: profile.alumni,
-						},
-					}
-				: {}),
-			...(personSameAs.length ? { sameAs: personSameAs } : {}),
-		},
-	}}
-/>
-
 <PageLayout meta={meta}>
+	<Schema
+		slot="head"
+		item={{
+			"@context": "https://schema.org",
+			"@type": "ProfilePage",
+			mainEntity: {
+				"@type": "Person",
+				name: authorName,
+				...(avatarUrl ? { image: avatarUrl } : {}),
+				...(profile?.jobTitle ? { jobTitle: profile.jobTitle } : {}),
+				...(profile?.employer
+					? {
+							worksFor: {
+								"@type": "Organization",
+								name: profile.employer,
+								...(profile.employerUrl ? { url: profile.employerUrl } : {}),
+							},
+						}
+					: {}),
+				...(profile?.alumni
+					? {
+							alumniOf: {
+								"@type": "CollegeOrUniversity",
+								name: profile.alumni,
+							},
+						}
+					: {}),
+				...(personSameAs.length ? { sameAs: personSameAs } : {}),
+			},
+		}}
+	/>
 	<section class="about" aria-labelledby="about-label">
 		<div class="section-label" id="about-label">About</div>
 		<div class="bio">
