@@ -20,34 +20,34 @@ const profile = siteConfig.profile;
 const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 ---
 
-<Schema
-	item={{
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{
-				"@type": "ListItem",
-				position: 1,
-				name: "Home",
-				item: siteUrl("/"),
-			},
-			{
-				"@type": "ListItem",
-				position: 2,
-				name: "About",
-				item: siteUrl("/about"),
-			},
-			{
-				"@type": "ListItem",
-				position: 3,
-				name: "Posts",
-				item: siteUrl("/posts"),
-			},
-		],
-	}}
-/>
-
 <PageLayout meta={{ title: "Home", description: siteConfig.description }}>
+	<Schema
+		slot="head"
+		item={{
+			"@context": "https://schema.org",
+			"@type": "BreadcrumbList",
+			itemListElement: [
+				{
+					"@type": "ListItem",
+					position: 1,
+					name: "Home",
+					item: siteUrl("/"),
+				},
+				{
+					"@type": "ListItem",
+					position: 2,
+					name: "About",
+					item: siteUrl("/about"),
+				},
+				{
+					"@type": "ListItem",
+					position: 3,
+					name: "Posts",
+					item: siteUrl("/posts"),
+				},
+			],
+		}}
+	/>
 	<section class="hero">
 		<p>{siteConfig.description}</p>
 		<div class="socials">

@@ -22,8 +22,8 @@ analytics.
 - Per-post OG images generated at build time (Satori + resvg)
 - RSS feed, sitemap, robots.txt, web manifest
 - Optional [Giscus](https://giscus.app) comments with custom matched themes
-- Optional GA4 and Goatcounter analytics, both loaded via [Partytown](https://partytown.qwik.dev/) so they run on a
-  worker thread
+- Optional GA4 analytics loaded via [Partytown](https://partytown.qwik.dev/) so it runs on a worker thread, and
+  optional Goatcounter analytics
 - Optional [webmentions](https://webmention.io), fetched at build and cached locally
 - Perfect Lighthouse scores (Performance, Accessibility, Best Practices, SEO)
 
@@ -155,6 +155,11 @@ GitHub Pages **user** site. The whole site (links, assets, feeds, OG/canonical, 
 For a GitHub Pages **project** site (served from `/repo/`), the bundled `.github/workflows/deploy.yml` detects the
 subpath and configures it automatically; the only manual step is **Settings → Pages → Source: GitHub Actions**. For a
 subpath on any other host, build with `BASE_PATH=/sub pnpm build`.
+
+### Site URL
+
+Canonical, OG, sitemap and RSS URLs use `SITE_URL`. The GitHub Pages workflow and `netlify.toml` set it for you; on
+any other host, build with `SITE_URL=https://example.com pnpm build`.
 
 ## Pulling theme updates
 

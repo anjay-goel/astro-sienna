@@ -104,7 +104,7 @@ export async function getStaticPaths() {
 			return {
 				params: { slug: post.id },
 				props: {
-					pubDate: (post.data.updatedDate ?? post.data.publishDate).toISOString(),
+					pubDate: post.data.publishDate.toISOString(),
 					title: post.data.title,
 					tags: post.data.tags ?? [],
 					readingTime,

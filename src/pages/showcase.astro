@@ -1,33 +1,34 @@
 ---
 import { showcase } from "@/data/showcase";
 import PageLayout from "@/layouts/Base.astro";
+import { absoluteUrl } from "@/utils/path";
 import { Schema } from "astro-seo-schema";
 
-const siteUrl = (path: string) => new URL(path, Astro.site).toString();
+const siteUrl = (path: string) => absoluteUrl(path, Astro.site);
 ---
 
-<Schema
-	item={{
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{
-				"@type": "ListItem",
-				position: 1,
-				name: "Home",
-				item: siteUrl("/"),
-			},
-			{
-				"@type": "ListItem",
-				position: 2,
-				name: "Showcase",
-				item: siteUrl("/showcase"),
-			},
-		],
-	}}
-/>
-
 <PageLayout meta={{ title: "Showcase" }}>
+	<Schema
+		slot="head"
+		item={{
+			"@context": "https://schema.org",
+			"@type": "BreadcrumbList",
+			itemListElement: [
+				{
+					"@type": "ListItem",
+					position: 1,
+					name: "Home",
+					item: siteUrl("/"),
+				},
+				{
+					"@type": "ListItem",
+					position: 2,
+					name: "Showcase",
+					item: siteUrl("/showcase"),
+				},
+			],
+		}}
+	/>
 	<section class="work" aria-labelledby="work-label">
 		<div class="section-label" id="work-label">Showcase</div>
 		<p class="intro">

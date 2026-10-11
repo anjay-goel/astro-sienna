@@ -133,6 +133,9 @@ importers:
       cssnano:
         specifier: ^9.6.0
         version: 9.6.0(postcss@8.5.29)
+      github-slugger:
+        specifier: ^2.0.0
+        version: 2.0.0
       mdast-util-to-hast:
         specifier: ^13.2.1
         version: 13.2.1

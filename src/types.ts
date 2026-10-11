@@ -70,7 +70,9 @@ export interface SiteConfig {
 
 export interface SiteMeta {
 	articleDate?: string | undefined;
+	articleModified?: string | undefined;
 	description?: string;
+	noindex?: boolean;
 	ogImage?: string | undefined;
 	title: string;
 }

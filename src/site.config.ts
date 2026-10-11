@@ -66,8 +66,7 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	styleOverrides: {
 		borderRadius: "4px",
 		codeBackground: ({ theme }) => (theme.type === "light" ? "#f0e9d6" : "#1a1715"),
-		codeFontFamily:
-			'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;',
+		codeFontFamily: "var(--font-mono)",
 		codeFontSize: "0.875rem",
 		codeLineHeight: "1.7142857rem",
 		codePaddingInline: "1rem",

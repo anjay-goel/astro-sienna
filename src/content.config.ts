@@ -29,8 +29,9 @@ const post = defineCollection({
 			title: z.string().max(120),
 			updatedDate: z
 				.string()
+				.or(z.date())
 				.optional()
-				.transform((str) => (str ? new Date(str) : undefined)),
+				.transform((val) => (val ? new Date(val) : undefined)),
 		}),
 });
 

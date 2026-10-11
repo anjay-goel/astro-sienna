@@ -43,6 +43,7 @@ jobs:
       - run: pnpm build
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.origin }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

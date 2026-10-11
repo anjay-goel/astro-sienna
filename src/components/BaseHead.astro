@@ -8,7 +8,7 @@ import newsreaderLatin from "@fontsource-variable/newsreader/files/newsreader-la
 
 type Props = SiteMeta;
 
-const {articleDate, description, ogImage, title} = Astro.props;
+const {articleDate, articleModified, description, noindex, ogImage, title} = Astro.props;
 
 const titleSeparator = "|";
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
@@ -37,7 +37,7 @@ const goatcounter = analytics?.goatcounterUrl;
 
 <link href={withBase("/manifest.webmanifest")} rel="manifest"/>
 
-<link href={canonicalURL} rel="canonical"/>
+{noindex ? <meta content="noindex" name="robots"/> : <link href={canonicalURL} rel="canonical"/>}
 
 <meta content={siteTitle} name="title"/>
 <meta content={description} name="description"/>
@@ -62,17 +62,16 @@ const goatcounter = analytics?.goatcounterUrl;
     <>
         <meta content={siteConfig.author} property="article:author"/>
         <meta content={articleDate} property="article:published_time"/>
+        {articleModified && <meta content={articleModified} property="article:modified_time"/>}
     </>
         )
     }
 
-<meta content="summary_large_image" property="twitter:card"/>
-<meta content={canonicalURL} property="twitter:url"/>
-<meta content={title} property="twitter:title"/>
-<meta content={description} property="twitter:description"/>
-<meta content={socialImageURL} property="twitter:image"/>
-
-<link href={withBase("/sitemap-index.xml")} rel="sitemap"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content={canonicalURL} name="twitter:url"/>
+<meta content={title} name="twitter:title"/>
+<meta content={description} name="twitter:description"/>
+<meta content={socialImageURL} name="twitter:image"/>
 
 <link href={withBase("/rss.xml")} rel="alternate" title={siteConfig.title} type="application/rss+xml"/>
 
@@ -101,7 +100,7 @@ const goatcounter = analytics?.goatcounterUrl;
     </>
 )}
 {goatcounter && (
-    <script is:inline type="text/partytown" data-goatcounter={goatcounter}
+    <script is:inline data-goatcounter={goatcounter}
             async src="//gc.zgo.at/count.js"></script>
 )}
 
