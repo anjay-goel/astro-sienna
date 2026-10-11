@@ -1,36 +1,32 @@
 # Astro Sienna
 
-A minimal Astro blog template with serif typography, dark mode, RSS, OG images, and optional Giscus comments and
-analytics.
+A minimal blog theme for Astro with serif typography, light and dark modes, RSS, generated OG images, and optional
+comments and analytics.
 
-**Live demo:** [Github Pages](https://anjay-goel.github.io/astro-sienna)
+Live demo: [anjay-goel.github.io/astro-sienna](https://anjay-goel.github.io/astro-sienna)
 
 ![Astro Sienna home page in dark and light themes](.github/assets/preview.png)
 
 ## Features
 
-- Astro 7 with content collections (posts and pages, both validated by Zod)
-- MDX support — embed Astro/JSX components, imports, and JS expressions inside posts
-- Mermaid diagrams in Markdown and MDX, loaded only on posts that use them and only when a diagram approaches the
-  viewport
-- Light and dark mode with a CSS-only theme toggle
-- Self-hosted serif body font ([Newsreader](https://github.com/productiontype/Newsreader)) and mono (JetBrains Mono)
-- Code blocks via [astro-expressive-code](https://expressive-code.com): themes, copy button, terminal frames, line
+- Astro 7 content collections for posts and pages, with Zod-validated frontmatter
+- Markdown and MDX posts (MDX lets you use components, imports and expressions)
+- Light and dark themes that follow the system setting, with a toggle that remembers your choice
+- Self-hosted fonts: [Newsreader](https://github.com/productiontype/Newsreader) for text, Inter for UI, JetBrains Mono
+  for code
+- Code blocks via [Expressive Code](https://expressive-code.com), with a copy button, terminal frames and line
   highlighting
-- Math via KaTeX (`$inline$` and `$$display$$`)
-- Custom containers (`:::note`, `:::tip`, `:::caution`)
-- Tag pages — post tags link to per-tag archives, with a browsable `/tags/` index
-- Per-post OG images generated at build time (Satori + resvg)
-- RSS feed, sitemap, robots.txt, web manifest
-- Optional [Giscus](https://giscus.app) comments with custom matched themes
-- Optional GA4 analytics loaded via [Partytown](https://partytown.qwik.dev/) so it runs on a worker thread, and
-  optional Goatcounter analytics
-- Optional [webmentions](https://webmention.io), fetched at build and cached locally
-- Perfect Lighthouse scores (Performance, Accessibility, Best Practices, SEO)
+- KaTeX math, Mermaid diagrams and admonitions (`:::note`, `:::tip` and friends)
+- Tag pages and a `/tags/` index
+- A 1200×630 OG image for every post, generated at build time with Satori and resvg
+- RSS feed, sitemap, robots.txt and web manifest
+- Pagefind index built after every production build
+- Optional [Giscus](https://giscus.app) comments, GA4 or GoatCounter analytics, and
+  [webmentions](https://webmention.io)
 
 ## Quick start
 
-Click **Use this template** on GitHub, or clone directly:
+Click **Use this template** on GitHub, or clone it:
 
 ```sh
 git clone https://github.com/anjay-goel/astro-sienna.git my-site
@@ -39,65 +35,71 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:4321.
+Then open http://localhost:4321.
 
-## Commands
-
-| Command        | What it does                                 |
-|----------------|----------------------------------------------|
-| `pnpm dev`     | Start the dev server with HMR                |
-| `pnpm build`   | Type-check, build, and run Pagefind indexing |
-| `pnpm preview` | Preview the production build locally         |
-| `pnpm format`  | Run Biome and Prettier                       |
-| `pnpm lint`    | Lint with Biome                              |
+| Command        | What it does                                         |
+|----------------|------------------------------------------------------|
+| `pnpm dev`     | Start the dev server                                 |
+| `pnpm build`   | Type-check, build to `dist/`, then run Pagefind      |
+| `pnpm preview` | Serve the production build locally                   |
+| `pnpm test`    | Run the tests in `tests/` with the Node test runner  |
+| `pnpm lint`    | Lint with Biome                                      |
+| `pnpm format`  | Format with Biome and Prettier                       |
 
 ## Configuration
 
-Most personalisation happens in two files.
+Most settings live in `src/site.config.ts`: title, description, author, date format, profile links, comments,
+analytics and webmentions. Every `profile` field except `name` is optional, and any link you leave out is hidden.
+`comments` and `analytics` are commented out by default. Nothing loads until you fill them in.
 
-**`src/site.config.ts`** holds author, profile, comments, analytics, and webmentions. Every field in `profile` is
-optional. Leave any of `email`, `github`, `linkedin`, `employer`, `alumni`, or `avatar` undefined and the corresponding
-link is hidden site-wide. Same for `comments` and `analytics`: undefined means the script never loads.
+Dates are formatted in UTC. To use another zone, set `date.options.timeZone` (for example `"Asia/Kolkata"`). Set
+`sortPostsByUpdatedDate: true` to order posts by `updatedDate` when it exists, and `hideThemeCredit: true` to drop the
+theme credit from the footer.
 
-**`astro.config.ts`** is where you set `site` to your final domain (used for canonical URLs, sitemap, RSS, and OG image
-URLs). The base path is handled automatically — see [Deploying](#deploying); you normally don't touch it.
+Replace these files in `public/`:
 
-Replace these assets in `public/`:
+- `icon.png` (512×512): the favicon, also used to generate the manifest and Apple touch icons
+- `social-card.png` (1200×630): the OG image for pages that aren't posts
+- `avatar.png` (optional): point `profile.avatar` at it to include it in the About page's structured data
 
-- `icon.png` (512×512). Drives the favicon and the auto-generated `apple-touch-icon`, `icon-192`, and `icon-512` PWA
-  manifest icons.
-- `social-card.png` (1200×630). Fallback OG image, used when a post doesn't have its own. The default is a placeholder
-  you can swap.
-- `avatar.png` (optional). Referenced from `siteConfig.profile.avatar`, used in the About page's structured data and any
-  avatar slot you add.
-
-### Per-post OG images
-
-Every post gets its own 1200×630 OG image generated at build time by [Satori](https://github.com/vercel/satori). The
-markup lives in `src/pages/og-image/[...slug].png.ts`. Tweak it once and every post's card updates on the next build. To
-skip the generated image and point a post at your own, set `ogImage: "/path/to/image.png"` in the post's frontmatter.
+The About page is `src/content/page/about.md`. Showcase entries are in `src/data/showcase.ts`. If that array is empty,
+the Showcase link is hidden.
 
 ## Writing posts
 
-Posts live in `src/content/post/` as `.md` or `.mdx` files. The filename becomes the slug.
+Posts are `.md` or `.mdx` files in `src/content/post/`. The filename becomes the URL slug.
 
 ```yaml
 ---
 title: "Your post title"
 publishDate: 2026-01-12
-description: "One-sentence summary used in cards, social previews, and meta tags."
-tags: [ tag-one, tag-two ]
-# updatedDate: 2026-02-01     # optional, shown as "Updated …"
-# draft: true                  # excludes the post from production builds
-# coverImage:
-#   src: ./_assets/cover.png
-#   alt: "Description for screen readers"
+description: "One-sentence summary for cards, social previews and meta tags."
+tags: [tag-one, tag-two]
+updatedDate: 2026-02-01
+draft: true
+ogImage: "/images/custom-card.png"
+coverImage:
+  src: ./_assets/cover.png
+  alt: "Description for screen readers"
 ---
 ```
 
+Only `title`, `publishDate` and `description` are required. `description` must be 10 to 160 characters. Dates can be
+quoted or unquoted. `updatedDate` shows an "Updated" line and sets the post's `lastmod` in the sitemap (otherwise
+`publishDate` is used). Drafts show up in `pnpm dev` but are left out of production builds. `ogImage` replaces the
+generated OG image. To change the generated card for every post, edit `src/pages/og-image/[...slug].png.ts`.
+
+Links and images that start with `/` get the base path added automatically. External links open in a new tab. Wide
+tables scroll sideways instead of stretching the page.
+
+### Math
+
+Write `$inline$` or `$$display$$` math. KaTeX renders it at build time, and the KaTeX stylesheet is only loaded on
+posts that contain math.
+
 ### Diagrams
 
-Use a `mermaid` fence in a Markdown or MDX post:
+Use a `mermaid` code fence in a `.md` or `.mdx` post:
 
 ````markdown
 ```mermaid
@@ -108,69 +110,57 @@ flowchart LR
 ```
 ````
 
-Diagrams follow the site's light/dark theme and redraw when the theme is toggled. Only posts that contain a diagram
-include the loader script; posts without diagrams ship no diagram code at all. On those posts, Mermaid loads locally
-from the built assets when the first diagram comes within 200px of the viewport.
+Only posts with a diagram include the loader script. Mermaid itself is served from the site's own assets and loads
+when the first diagram comes within 200px of the viewport. Diagrams use Mermaid's classic look, follow the current
+theme, and redraw when you toggle it. Small diagrams shrink to fit narrow screens, and wide ones scroll inside their
+frame. If JavaScript is off or a diagram has a syntax error, the source text stays on the page. Diagram source is
+excluded from the Pagefind index. Add `accTitle` and `accDescr` for screen readers.
 
-Without JavaScript, the diagram source remains readable. Invalid diagrams also keep their source and log an error.
-Small diagrams shrink to fit narrow screens and wide ones scroll horizontally inside their frame. Diagram source is
-excluded from Pagefind search. Use `accTitle` and `accDescr` for screen-reader descriptions.
+Colors and fonts are set in `src/scripts/mermaid.ts`. See `src/content/post/diagrams-with-mermaid.md` for flowchart,
+sequence, state and entity-relationship examples.
 
-The demo post `src/content/post/diagrams-with-mermaid.md` shows flowcharts, sequence, state, entity-relationship and
-Gantt diagrams. The renderer is configured in `src/scripts/mermaid.ts`: colours, font and Mermaid's `classic` look.
+### Admonitions
 
-The about page is also markdown, at `src/content/page/about.md`. Showcase entries are typed objects in
-`src/data/showcase.ts`; empty the array and the Showcase tab is hidden automatically.
-
-## Project layout
-
+```markdown
+:::tip[Optional custom title]
+Body text.
+:::
 ```
-src/
-  site.config.ts        # author / profile / integrations
-  content.config.ts     # collection schemas (post, page)
-  content/
-    post/*.md           # blog posts
-    page/about.md       # about page
-  data/showcase.ts      # showcase entries (or empty for none)
-  components/           # blog/, layout/
-  layouts/              # Base.astro, BlogPost.astro
-  pages/                # routes (incl. /og-image, /posts pagination, /tags, rss)
-  plugins/              # remark-admonitions, remark-reading-time, rehype-base-path
-  styles/global.css     # design tokens and shared utilities
-public/                 # static assets served at site root
-```
+
+The types are `note`, `tip`, `important`, `caution` and `warning`.
 
 ## Theming
 
-Design tokens are CSS variables at the top of `src/styles/global.css`: accent colour, hairlines, surfaces, fonts. The
-light and dark variants are gated by `[data-theme="light"]` and `[data-theme="dark"]` on the `<html>` element, so
-swapping them is a single re-render with no script.
-
-Code-block themes are configured separately in `expressiveCodeOptions` in `site.config.ts` (defaults: `min-light` and
-`min-dark`).
+Colors and fonts are CSS variables at the top of `src/styles/global.css`, with separate blocks for
+`[data-theme="light"]` and `[data-theme="dark"]`. Code block themes and colors are set in `expressiveCodeOptions` in
+`src/site.config.ts` (the defaults are `min-light` and `min-dark`).
 
 ## Deploying
 
-Output is a static `dist/` directory that deploys anywhere serving files: Cloudflare Pages, Netlify, Vercel, GitHub
-Pages, S3 + CloudFront. Build command: `pnpm build`. Output directory: `dist`.
+`pnpm build` writes a static site to `dist/`, so any static host works.
 
-### Base path
+Set `SITE_URL` to your site's origin when you build. It is used for canonical URLs, OG images, the sitemap and RSS.
+The GitHub Pages workflow (`.github/workflows/deploy.yml`) and `netlify.toml` set it for you. Elsewhere, run
+`SITE_URL=https://example.com pnpm build`, or change the fallback in `astro.config.ts`.
 
-Defaults to root (`/`) — no config needed for local dev, Netlify, Vercel, Cloudflare Pages, a custom domain, or a
-GitHub Pages **user** site. The whole site (links, assets, feeds, OG/canonical, manifest, Markdown links) is base-aware.
+The base path defaults to `/`, which is right for a custom domain, Netlify, Vercel, Cloudflare Pages or a GitHub Pages
+user site. For a GitHub Pages project site served from `/repo/`, the deploy workflow detects the subpath and sets
+`BASE_PATH` for you. You only need to set **Settings > Pages > Source** to **GitHub Actions**. On other hosts, build
+with `BASE_PATH=/sub pnpm build`.
 
-For a GitHub Pages **project** site (served from `/repo/`), the bundled `.github/workflows/deploy.yml` detects the
-subpath and configures it automatically; the only manual step is **Settings → Pages → Source: GitHub Actions**. For a
-subpath on any other host, build with `BASE_PATH=/sub pnpm build`.
+## Comments, analytics and webmentions
 
-### Site URL
-
-Canonical, OG, sitemap and RSS URLs use `SITE_URL`. The GitHub Pages workflow and `netlify.toml` set it for you; on
-any other host, build with `SITE_URL=https://example.com pnpm build`.
+- **Giscus**: fill in `comments` in `src/site.config.ts` with the values from the [Giscus setup page](https://giscus.app).
+  The widget follows the site theme, using the stylesheets in `public/giscus-*.css` in production builds.
+- **Analytics**: set `analytics.googleAnalyticsId`, `analytics.goatcounterUrl`, or both. GA4 runs in a web worker
+  through [Partytown](https://partytown.qwik.dev/), which is only added to the build when a GA4 ID is set.
+  GoatCounter loads its `count.js` as a normal async script.
+- **Webmentions**: set `webmentions.link` (and optionally `pingback`), and provide `WEBMENTION_API_KEY` at build time.
+  Mentions are fetched during the build and cached in `.data/webmentions.json`.
 
 ## Pulling theme updates
 
-To keep tracking upstream changes after you've forked, add this repo as a second remote:
+Add this repo as a second remote and merge from it:
 
 ```sh
 git remote add theme https://github.com/anjay-goel/astro-sienna.git
@@ -178,14 +168,14 @@ git fetch theme
 git merge theme/main --allow-unrelated-histories
 ```
 
-Use `.gitattributes` with a `merge=ours` driver on personal-content paths (e.g. `src/content/post/*`,
-`src/site.config.ts`, `public/avatar.png`) to keep your changes through the merge.
+To keep your own versions of files like `src/content/post/*` or `src/site.config.ts` during the merge, mark them
+`merge=ours` in `.gitattributes` and enable the driver with `git config merge.ours.driver true`.
 
 ## Credits
 
-Originally forked from [astro-theme-cactus](https://github.com/chrismwilliams/astro-theme-cactus)
-by [Chris Williams](https://github.com/chrismwilliams), then heavily revamped into its current form.
+Started as a fork of [astro-theme-cactus](https://github.com/chrismwilliams/astro-theme-cactus) by
+[Chris Williams](https://github.com/chrismwilliams) and has been largely rewritten since.
 
 ## License
 
-[MIT](./LICENSE).
+[MIT](./LICENSE)
