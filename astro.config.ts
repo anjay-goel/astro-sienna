@@ -19,6 +19,7 @@ import { remarkAdmonitions } from "./src/plugins/remark-admonitions";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { rehypeTableScroll } from "./src/plugins/rehype-table-scroll";
 import { getPostLastModified } from "./src/utils/sitemap";
+import { remarkMermaid } from "./src/plugins/remark-mermaid";
 
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
@@ -116,7 +117,7 @@ export default defineConfig({
 					},
 				],
 			],
-			remarkPlugins: [remarkReadingTime, remarkDirective, remarkAdmonitions, remarkMath],
+			remarkPlugins: [remarkMermaid, remarkReadingTime, remarkDirective, remarkAdmonitions, remarkMath],
 			remarkRehype: {
 				footnoteLabelProperties: {
 					className: [""],
