@@ -1,11 +1,16 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import { siteConfig } from "@/site-config";
+import { withBase } from "@/utils/path";
 
 /** Fetch all posts. Drafts are excluded in production builds. */
 export async function getAllPosts(): Promise<CollectionEntry<"post">[]> {
 	return await getCollection("post", ({ data }) => {
 		return import.meta.env.PROD ? !data.draft : true;
 	});
+}
+
+export function getPostHref(post: CollectionEntry<"post">): string {
+	return post.data.externalUrl ?? withBase(`/posts/${post.id}/`);
 }
 
 /** Date used for sorting — `updatedDate` if `siteConfig.sortPostsByUpdatedDate`, else `publishDate`. */

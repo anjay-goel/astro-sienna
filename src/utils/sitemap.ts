@@ -12,13 +12,11 @@ function toDate(value: unknown): Date | undefined {
 	return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
-export function getPostLastModified(): Map<string, Date> {
-	const dates = new Map<string, Date>();
+function readPosts(): { id: string; frontmatter: Record<string, unknown> }[] {
+	const posts: { id: string; frontmatter: Record<string, unknown> }[] = [];
 	for (const file of fs.readdirSync(POST_DIR, { encoding: "utf8", recursive: true })) {
 		if (!/\.mdx?$/.test(file)) continue;
 		const { frontmatter } = parseFrontmatter(fs.readFileSync(path.join(POST_DIR, file), "utf8"));
-		const date = toDate(frontmatter.updatedDate) ?? toDate(frontmatter.publishDate);
-		if (!date) continue;
 		const id =
 			typeof frontmatter.slug === "string"
 				? frontmatter.slug
@@ -28,7 +26,24 @@ export function getPostLastModified(): Map<string, Date> {
 						.map((segment) => slug(segment))
 						.join("/")
 						.replace(/\/index$/, "");
-		dates.set(id, date);
+		posts.push({ id, frontmatter });
+	}
+	return posts;
+}
+
+export function getPostLastModified(): Map<string, Date> {
+	const dates = new Map<string, Date>();
+	for (const { id, frontmatter } of readPosts()) {
+		const date = toDate(frontmatter.updatedDate) ?? toDate(frontmatter.publishDate);
+		if (date) dates.set(id, date);
 	}
 	return dates;
+}
+
+export function getExternalPostIds(): Set<string> {
+	return new Set(
+		readPosts()
+			.filter(({ frontmatter }) => frontmatter.externalUrl)
+			.map(({ id }) => id),
+	);
 }

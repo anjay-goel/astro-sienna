@@ -20,6 +20,7 @@ const post = defineCollection({
 				.optional(),
 			description: z.string().min(10).max(160),
 			draft: z.boolean().default(false),
+			externalUrl: z.url().optional(),
 			ogImage: z.string().optional(),
 			publishDate: z
 				.string()

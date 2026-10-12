@@ -1,0 +1,27 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<span class="external-icon">
+	<Icon name="mdi:open-in-new" aria-hidden="true" /><span class="sr-only">(external)</span>
+</span>
+
+<style>
+	.external-icon {
+		display: inline-block;
+		margin-left: 0.1em;
+		font-size: min(0.7em, 18px);
+		line-height: 1;
+		vertical-align: -0.125em;
+		color: hsl(var(--theme-text) / 0.55);
+		transition: color 0.2s ease;
+	}
+	.external-icon :global(svg) {
+		display: block;
+		width: 1em;
+		height: 1em;
+	}
+	:global(.post:hover) .external-icon {
+		color: hsl(var(--theme-accent));
+	}
+</style>
