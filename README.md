@@ -92,6 +92,23 @@ generated OG image. To change the generated card for every post, edit `src/pages
 Links and images that start with `/` get the base path added automatically. External links open in a new tab. Wide
 tables scroll sideways instead of stretching the page.
 
+### Posts published elsewhere
+
+To list a post that lives on another site, add `externalUrl` to its frontmatter and leave the body empty:
+
+```yaml
+---
+title: "A post I wrote for the company blog"
+publishDate: 2026-01-20
+description: "One-sentence summary for cards and the RSS feed."
+externalUrl: "https://example.com/blog/my-post/"
+---
+```
+
+The post shows up in the home page, archive, tag pages and RSS feed like any other, with an external-link icon after
+its title, and links straight to `externalUrl`. Its own `/posts/<slug>/` URL redirects there and is left out of the
+sitemap. See `src/content/post/content-collections-in-astro.md`.
+
 ### Math
 
 Write `$inline$` or `$$display$$` math. KaTeX renders it at build time, and the KaTeX stylesheet is only loaded on

@@ -16,6 +16,7 @@ export const getStaticPaths = (async () => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry } = Astro.props;
+if (entry.data.externalUrl) return Astro.redirect(entry.data.externalUrl, 301);
 const { Content } = await render(entry);
 ---
 
